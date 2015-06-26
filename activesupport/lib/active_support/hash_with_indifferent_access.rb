@@ -15,21 +15,21 @@ module ActiveSupport
   #   rgb[:white]  # => '#FFFFFF'
   #   rgb['white'] # => '#FFFFFF'
   #
-  # Internally symbols are mapped to strings when used as keys in the entire
+  # Internally symbols are mapped to symbols when used as keys in the entire
   # writing interface (calling <tt>[]=</tt>, <tt>merge</tt>, etc). This
   # mapping belongs to the public interface. For example, given:
   #
-  #   hash = ActiveSupport::HashWithIndifferentAccess.new(a: 1)
+  #   hash = ActiveSupport::HashWithIndifferentAccess.new("a" => 1)
   #
   # You are guaranteed that the key is returned as a string:
   #
-  #   hash.keys # => ["a"]
+  #   hash.keys # => [:a]
   #
   # Technically other types of keys are accepted:
   #
   #   hash = ActiveSupport::HashWithIndifferentAccess.new(a: 1)
   #   hash[0] = 0
-  #   hash # => {"a"=>1, 0=>0}
+  #   hash # => {:a=>1, 0=>0}
   #
   # but this class is intended for use cases where strings or symbols are the
   # expected keys and it is convenient to understand both as the same. For
@@ -65,7 +65,7 @@ module ActiveSupport
     end
 
     def default(key = nil)
-      if key.is_a?(Symbol) && include?(key = key.to_s)
+      if key.is_a?(String) && include?(key = key.to_sym)
         self[key]
       else
         super
@@ -107,7 +107,7 @@ module ActiveSupport
     #   hash_2 = ActiveSupport::HashWithIndifferentAccess.new
     #   hash_2[:key] = 'New Value!'
     #
-    #   hash_1.update(hash_2) # => {"key"=>"New Value!"}
+    #   hash_1.update(hash_2) # => {:key=>"New Value!"}
     #
     # The argument can be either an
     # <tt>ActiveSupport::HashWithIndifferentAccess</tt> or a regular +Hash+.
@@ -123,7 +123,7 @@ module ActiveSupport
     #
     #   hash_1[:key] = 10
     #   hash_2['key'] = 12
-    #   hash_1.update(hash_2) { |key, old, new| old + new } # => {"key"=>22}
+    #   hash_1.update(hash_2) { |key, old, new| old + new } # => {:key=>22}
     def update(other_hash)
       if other_hash.is_a? HashWithIndifferentAccess
         super(other_hash)
@@ -204,7 +204,7 @@ module ActiveSupport
     #
     #   hash = ActiveSupport::HashWithIndifferentAccess.new
     #   hash['a'] = nil
-    #   hash.reverse_merge(a: 0, b: 1) # => {"a"=>nil, "b"=>1}
+    #   hash.reverse_merge(a: 0, b: 1) # => {:a=>nil, :b=>1}
     def reverse_merge(other_hash)
       super(self.class.new_from_hash_copying_default(other_hash))
     end
@@ -217,7 +217,7 @@ module ActiveSupport
     # Replaces the contents of this hash with other_hash.
     #
     #   h = { "a" => 100, "b" => 200 }
-    #   h.replace({ "c" => 300, "d" => 400 }) # => {"c"=>300, "d"=>400}
+    #   h.replace({ "c" => 300, "d" => 400 }) # => {:c=>300, :d=>400}
     def replace(other_hash)
       super(self.class.new_from_hash_copying_default(other_hash))
     end
@@ -256,7 +256,7 @@ module ActiveSupport
 
     protected
       def convert_key(key)
-        key.kind_of?(Symbol) ? key.to_s : key
+        key.kind_of?(String) ? key.to_sym : key
       end
 
       def convert_value(value, options = {})
