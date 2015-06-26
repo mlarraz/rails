@@ -871,8 +871,8 @@ class EnvironmentFilterIntegrationTest < ActionDispatch::IntegrationTest
   test "filters rack request form vars" do
     post "/post", params: { username: 'cjolly', password: 'secret' }
 
-    assert_equal 'cjolly', request.filtered_parameters['username']
-    assert_equal '[FILTERED]', request.filtered_parameters['password']
+    assert_equal 'cjolly', request.filtered_parameters[:username]
+    assert_equal '[FILTERED]', request.filtered_parameters[:password]
     assert_equal '[FILTERED]', request.filtered_env['rack.request.form_vars']
   end
 end

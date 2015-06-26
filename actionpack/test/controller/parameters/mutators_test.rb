@@ -45,29 +45,29 @@ class ParametersMutatorsTest < ActiveSupport::TestCase
 
   test "keep_if retains permitted status" do
     @params.permit!
-    assert @params.keep_if { |k,v| k == "person" }.permitted?
+    assert @params.keep_if { |k,v| k == :person }.permitted?
   end
 
   test "keep_if retains unpermitted status" do
-    assert_not @params.keep_if { |k,v| k == "person" }.permitted?
+    assert_not @params.keep_if { |k,v| k == :person }.permitted?
   end
 
   test "reject! retains permitted status" do
     @params.permit!
-    assert @params.reject! { |k| k == "person" }.permitted?
+    assert @params.reject! { |k| k == :person }.permitted?
   end
 
   test "reject! retains unpermitted status" do
-    assert_not @params.reject! { |k| k == "person" }.permitted?
+    assert_not @params.reject! { |k| k == :person }.permitted?
   end
 
   test "select! retains permitted status" do
     @params.permit!
-    assert @params.select! { |k| k != "person" }.permitted?
+    assert @params.select! { |k| k != :person }.permitted?
   end
 
   test "select! retains unpermitted status" do
-    assert_not @params.select! { |k| k != "person" }.permitted?
+    assert_not @params.select! { |k| k != :person }.permitted?
   end
 
   test "slice! retains permitted status" do

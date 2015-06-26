@@ -561,7 +561,7 @@ class RequestParamsParsing < BaseRequestTest
       'rack.input' => StringIO.new("flamenco=love")
     )
 
-    assert_equal({"flamenco"=> "love"}, request.request_parameters)
+    assert_equal({ flamenco: "love"}, request.request_parameters)
   end
 
   test "doesnt interpret request uri as query string when missing" do

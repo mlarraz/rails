@@ -30,7 +30,7 @@ module ActionController
   # controller's name. For example, if you're posting to +UsersController+,
   # your new +params+ hash will look like this:
   #
-  #     {"name" => "Konata", "user" => {"name" => "Konata"}}
+  #     {:name => "Konata", :user => {:name => "Konata"}}
   #
   # You can also specify the key in which the parameters should be wrapped to,
   # and also the list of attributes it should wrap by using either +:include+ or
@@ -69,7 +69,7 @@ module ActionController
   module ParamsWrapper
     extend ActiveSupport::Concern
 
-    EXCLUDE_PARAMETERS = %w(authenticity_token _method utf8)
+    EXCLUDE_PARAMETERS = %i(authenticity_token _method utf8)
 
     require 'mutex_m'
 
@@ -79,8 +79,8 @@ module ActionController
       def self.from_hash(hash)
         name    = hash[:name]
         format  = Array(hash[:format])
-        include = hash[:include] && Array(hash[:include]).collect(&:to_s)
-        exclude = hash[:exclude] && Array(hash[:exclude]).collect(&:to_s)
+        include = hash[:include] && Array(hash[:include]).collect(&:to_sym)
+        exclude = hash[:exclude] && Array(hash[:exclude]).collect(&:to_sym)
         new name, format, include, exclude, nil, nil
       end
 

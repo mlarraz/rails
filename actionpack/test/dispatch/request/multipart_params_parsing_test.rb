@@ -28,15 +28,15 @@ class MultipartParamsParsingTest < ActionDispatch::IntegrationTest
   end
 
   test "parses single parameter" do
-    assert_equal({ 'foo' => 'bar' }, parse_multipart('single_parameter'))
+    assert_equal({ foo: 'bar' }, parse_multipart('single_parameter'))
   end
 
   test "parses bracketed parameters" do
-    assert_equal({ 'foo' => { 'baz' => 'bar'}}, parse_multipart('bracketed_param'))
+    assert_equal({ foo: { baz: 'bar' }}, parse_multipart('bracketed_param'))
   end
 
   test "parse single utf8 parameter" do
-    assert_equal({ 'Iñtërnâtiônàlizætiøn_name' => 'Iñtërnâtiônàlizætiøn_value'},
+    assert_equal({ :Iñtërnâtiônàlizætiøn_name => 'Iñtërnâtiônàlizætiøn_value'},
                  parse_multipart('single_utf8_param'), "request.request_parameters")
     assert_equal(
       'Iñtërnâtiônàlizætiøn_value',
@@ -44,17 +44,17 @@ class MultipartParamsParsingTest < ActionDispatch::IntegrationTest
   end
 
   test "parse bracketed utf8 parameter" do
-    assert_equal({ 'Iñtërnâtiônàlizætiøn_name' => {
-      'Iñtërnâtiônàlizætiøn_nested_name' => 'Iñtërnâtiônàlizætiøn_value'} },
+    assert_equal({ :Iñtërnâtiônàlizætiøn_name => {
+      :Iñtërnâtiônàlizætiøn_nested_name => 'Iñtërnâtiônàlizætiøn_value' } },
       parse_multipart('bracketed_utf8_param'), "request.request_parameters")
     assert_equal(
-      {'Iñtërnâtiônàlizætiøn_nested_name' => 'Iñtërnâtiônàlizætiøn_value'},
+      { :Iñtërnâtiônàlizætiøn_nested_name => 'Iñtërnâtiônàlizætiøn_value' },
       TestController.last_parameters['Iñtërnâtiônàlizætiøn_name'], "request.parameters")
   end
 
   test "parses text file" do
     params = parse_multipart('text_file')
-    assert_equal %w(file foo), params.keys.sort
+    assert_equal %i(file foo), params.keys.sort
     assert_equal 'bar', params['foo']
 
     file = params['file']
@@ -65,7 +65,7 @@ class MultipartParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "parses boundary problem file" do
     params = parse_multipart('boundary_problem_file')
-    assert_equal %w(file foo), params.keys.sort
+    assert_equal %i(file foo), params.keys.sort
 
     file = params['file']
     foo  = params['foo']
@@ -78,7 +78,7 @@ class MultipartParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "parses large text file" do
     params = parse_multipart('large_text_file')
-    assert_equal %w(file foo), params.keys.sort
+    assert_equal %i(file foo), params.keys.sort
     assert_equal 'bar', params['foo']
 
     file = params['file']
@@ -90,7 +90,7 @@ class MultipartParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "parses binary file" do
     params = parse_multipart('binary_file')
-    assert_equal %w(file flowers foo), params.keys.sort
+    assert_equal %i(file flowers foo), params.keys.sort
     assert_equal 'bar', params['foo']
 
     file = params['file']
@@ -106,7 +106,7 @@ class MultipartParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "parses mixed files" do
     params = parse_multipart('mixed_files')
-    assert_equal %w(files foo), params.keys.sort
+    assert_equal %i(files foo), params.keys.sort
     assert_equal 'bar', params['foo']
 
     # Rack doesn't handle multipart/mixed for us.
@@ -116,14 +116,14 @@ class MultipartParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "does not create tempfile if no file has been selected" do
     params = parse_multipart('none')
-    assert_equal %w(submit-name), params.keys.sort
+    assert_equal %i(submit-name), params.keys.sort
     assert_equal 'Larry', params['submit-name']
     assert_equal nil, params['files']
   end
 
   test "parses empty upload file" do
     params = parse_multipart('empty')
-    assert_equal %w(files submit-name), params.keys.sort
+    assert_equal %i(files submit-name), params.keys.sort
     assert_equal 'Larry', params['submit-name']
     assert params['files']
     assert_equal "", params['files'].read

@@ -47,7 +47,7 @@ module ActionDispatch
 
           expected_options = expected_options.clone
 
-          expected_options.stringify_keys!
+          expected_options.symbolize_keys!
 
           msg = message(msg, "") {
             sprintf("The recognized options <%s> did not match <%s>, difference:",

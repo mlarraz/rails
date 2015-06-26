@@ -263,7 +263,7 @@ class ParametersPermitTest < ActiveSupport::TestCase
 
       assert params.to_h.is_a? Hash
       assert_not @params.to_h.is_a? ActionController::Parameters
-      assert_equal({ "crab" => "Senjougahara Hitagi" }, params.to_h)
+      assert_equal({ crab: "Senjougahara Hitagi" }, params.to_h)
     ensure
       ActionController::Parameters.permit_all_parameters = false
     end
@@ -278,7 +278,7 @@ class ParametersPermitTest < ActiveSupport::TestCase
       }
     )
 
-    assert_equal({ "controller" => "users", "action" => "create" }, params.to_h)
+    assert_equal({ controller: "users", action: "create" }, params.to_h)
   end
 
   test "to_unsafe_h returns unfiltered params" do

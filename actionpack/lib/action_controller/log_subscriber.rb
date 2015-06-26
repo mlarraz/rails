@@ -1,6 +1,6 @@
 module ActionController
   class LogSubscriber < ActiveSupport::LogSubscriber
-    INTERNAL_PARAMS = %w(controller action format _method only_path)
+    INTERNAL_PARAMS = %i(controller action format _method only_path)
 
     def start_processing(event)
       return unless logger.info?

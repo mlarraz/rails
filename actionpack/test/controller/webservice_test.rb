@@ -7,7 +7,7 @@ class WebServiceTest < ActionDispatch::IntegrationTest
       if params[:full]
         render :text => dump_params_keys
       else
-        render :text => (params.keys - ['controller', 'action']).sort.join(", ")
+        render :text => (params.keys - %i[controller action]).sort.join(", ")
       end
     end
 

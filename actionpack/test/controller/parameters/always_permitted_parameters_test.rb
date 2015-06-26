@@ -5,12 +5,12 @@ require 'minitest/mock'
 class AlwaysPermittedParametersTest < ActiveSupport::TestCase
   def setup
     ActionController::Parameters.action_on_unpermitted_parameters = :raise
-    ActionController::Parameters.always_permitted_parameters = %w( controller action format )
+    ActionController::Parameters.always_permitted_parameters = %i( controller action format )
   end
 
   def teardown
     ActionController::Parameters.action_on_unpermitted_parameters = false
-    ActionController::Parameters.always_permitted_parameters = %w( controller action )
+    ActionController::Parameters.always_permitted_parameters = %i( controller action )
   end
 
   test "shows deprecations warning on NEVER_UNPERMITTED_PARAMS" do

@@ -27,7 +27,7 @@ class ActiveModelMassUpdateProtectionTest < ActiveSupport::TestCase
 
   test "permitted attributes can be used for mass updating" do
     params = ProtectedParams.new({ "a" => "b" }).permit!
-    assert_equal({ "a" => "b" }, Account.new.sanitize_for_mass_assignment(params))
+    assert_equal({ a: "b" }, Account.new.sanitize_for_mass_assignment(params))
   end
 
   test "regular attributes should still be allowed" do

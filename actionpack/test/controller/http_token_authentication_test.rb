@@ -151,7 +151,7 @@ class HttpTokenAuthenticationTest < ActionController::TestCase
     nonce_hash = {nonce: "123abc"}
     actual = ActionController::HttpAuthentication::Token.token_and_options(sample_request(token, nonce_hash))
     expected_token = token
-    expected_nonce = {"nonce" => nonce_hash[:nonce]}
+    expected_nonce = {nonce: nonce_hash[:nonce]}
     assert_equal(expected_token, actual.first)
     assert_equal(expected_nonce, actual.last)
   end

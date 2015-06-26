@@ -18,7 +18,7 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "parses unbalanced query string with array" do
     query    = "location[]=1&location[]=2&age_group[]=2"
-    expected = { 'location' => ["1", "2"], 'age_group' => ["2"] }
+    expected = { location: ["1", "2"], age_group: ["2"] }
     assert_parses expected, query
   end
 
@@ -30,11 +30,11 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
       "note[viewers][viewer][][id]=2"
     ].join("&")
     expected = {
-      "note" => {
-        "viewers" => {
-          "viewer" => [
-            { "id" => "1", "type" => "User" },
-            { "type" => "Group", "id" => "2" }
+      note: {
+        viewers: {
+          viewer: [
+            { id: "1", type: "User" },
+            { type: "Group", id: "2" }
           ]
         }
       }
@@ -56,24 +56,24 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
       "=Save"
     ].join("&")
     expected =  {
-      "customers" => {
-        "boston" => {
-          "first" => {
-            "name" => "David",
-            "url" => "http://David"
+      customers: {
+        boston: {
+          first: {
+            name: "David",
+            url: "http://David"
           },
-          "second" => {
-            "name" => "Allan",
-            "url" => "http://Allan"
+          second: {
+            name:"Allan",
+            url: "http://Allan"
           }
         }
       },
-      "something_else" => "blah",
-      "something_empty" => "",
-      "something_nil" => "",
-      "products" => {
-        "first" => "Apple Computer",
-        "second" => "Pc"
+      something_else: "blah",
+      something_empty: "",
+      something_nil: "",
+      products: {
+        first: "Apple Computer",
+        second: "Pc"
       }
     }
     assert_parses expected, query
@@ -81,25 +81,25 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
 
   test "parses params with array" do
     query    = "selected[]=1&selected[]=2&selected[]=3"
-    expected = { "selected" => ["1", "2", "3"] }
+    expected = { selected: ["1", "2", "3"] }
     assert_parses expected, query
   end
 
   test "parses params with nil key" do
     query    = "=&test2=value1"
-    expected = { "test2" => "value1" }
+    expected = { test2: "value1" }
     assert_parses expected, query
   end
 
   test "parses params with array prefix and hashes" do
     query    = "a[][b][c]=d"
-    expected = { "a" => [{ "b" => { "c" => "d" } }] }
+    expected = { a: [{ b: { c: "d" } }] }
     assert_parses expected, query
   end
 
   test "parses params with complex nesting" do
     query    = "a[][b][c][][d][]=e"
-    expected = { "a" => [{ "b" => { "c" => [{ "d" => ["e"] }] } }] }
+    expected = { a: [{ b: { c: [{ d: ["e"] }] } }] }
     assert_parses expected, query
   end
 
@@ -110,22 +110,22 @@ class UrlEncodedParamsParsingTest < ActionDispatch::IntegrationTest
       "logo=#{File.expand_path(__FILE__)}"
     ].join("&")
     expected = {
-      "customers" => {
-        "boston" => {
-          "first" => {
-            "name" => "David"
+      customers: {
+        boston: {
+          first: {
+            name: "David"
           }
         }
       },
-      "something_else" => "blah",
-      "logo" => File.expand_path(__FILE__),
+      something_else: "blah",
+      logo: File.expand_path(__FILE__),
     }
     assert_parses expected, query
   end
 
   test "parses params with Safari 2 trailing null character" do
     query    = "selected[]=1&selected[]=2&selected[]=3\0"
-    expected = { "selected" => ["1", "2", "3"] }
+    expected = { selected: ["1", "2", "3"] }
     assert_parses expected, query
   end
 

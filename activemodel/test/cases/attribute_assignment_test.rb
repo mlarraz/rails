@@ -54,7 +54,7 @@ class AttributeAssignmentTest < ActiveModel::TestCase
     end
 
     assert_equal model, error.record
-    assert_equal "hz", error.attribute
+    assert_equal :hz, error.attribute
   end
 
   test "assign private attribute" do

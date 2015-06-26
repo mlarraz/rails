@@ -21,7 +21,7 @@ module ActiveSupport
   #
   #   hash = ActiveSupport::HashWithIndifferentAccess.new("a" => 1)
   #
-  # You are guaranteed that the key is returned as a string:
+  # You are guaranteed that the key is returned as a symbol:
   #
   #   hash.keys # => [:a]
   #
@@ -216,7 +216,7 @@ module ActiveSupport
 
     # Replaces the contents of this hash with other_hash.
     #
-    #   h = { "a" => 100, "b" => 200 }
+    #   h = ActiveSupport::HashWithIndifferentAccess.new( "a" => 100, "b" => 200 )
     #   h.replace({ "c" => 300, "d" => 400 }) # => {:c=>300, :d=>400}
     def replace(other_hash)
       super(self.class.new_from_hash_copying_default(other_hash))
@@ -227,14 +227,14 @@ module ActiveSupport
       super(convert_key(key))
     end
 
-    def stringify_keys!; self end
-    def deep_stringify_keys!; self end
-    def stringify_keys; dup end
-    def deep_stringify_keys; dup end
-    undef :symbolize_keys!
-    undef :deep_symbolize_keys!
-    def symbolize_keys; to_hash.symbolize_keys! end
-    def deep_symbolize_keys; to_hash.deep_symbolize_keys! end
+    undef :stringify_keys!
+    undef :deep_stringify_keys!
+    def stringify_keys; to_hash.stringify_keys! end
+    def deep_stringify_keys; to_hash.deep_stringify_keys! end
+    def symbolize_keys!; self end
+    def deep_symbolize_keys!; self end
+    def symbolize_keys; dup end
+    def deep_symbolize_keys; dup end
     def to_options!; self end
 
     def select(*args, &block)
@@ -245,7 +245,7 @@ module ActiveSupport
       dup.tap { |hash| hash.reject!(*args, &block) }
     end
 
-    # Convert to a regular hash with string keys.
+    # Convert to a regular hash with symbol keys.
     def to_hash
       _new_hash = Hash.new(default)
       each do |key, value|

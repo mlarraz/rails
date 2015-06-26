@@ -229,7 +229,7 @@ XML
 
   def test_document_body_and_params_with_post
     post :test_params, params: { id: 1 }
-    assert_equal(%({"id"=>"1", "controller"=>"test_case_test/test", "action"=>"test_params"}), @response.body)
+    assert_equal(%({:id=>"1", :controller=>"test_case_test/test", :action=>"test_params"}), @response.body)
   end
 
   def test_document_body_with_post
@@ -488,8 +488,8 @@ XML
     parsed_params = eval(@response.body)
     assert_equal(
       {
-        'controller' => 'test_case_test/test', 'action' => 'test_params',
-        'page' => { 'name' => "Page name", 'month' => '4', 'year' => '2004', 'day' => '6' }
+        controller: 'test_case_test/test', action: 'test_params',
+        page: { name: "Page name", month: '4', year: '2004', day: '6' }
       },
       parsed_params
     )
@@ -507,23 +507,23 @@ XML
     parsed_params = eval(@response.body)
     assert_equal(
       {
-        'controller' => 'test_case_test/test', 'action' => 'test_params',
-        'page' => { 'name' => "Page name", 'month' => '4', 'year' => '2004', 'day' => '6' }
+        controller: 'test_case_test/test', action: 'test_params',
+        page: { name: "Page name", month: '4', year: '2004', day: '6' }
       },
       parsed_params
     )
   end
 
   def test_query_param_named_action
-    get :test_query_parameters, params: {action: 'foobar'}
+    get :test_query_parameters, params: { action: 'foobar' }
     parsed_params = eval(@response.body)
-    assert_equal({action: 'foobar'}, parsed_params)
+    assert_equal({ action: 'foobar' }, parsed_params)
   end
 
   def test_request_param_named_action
-    post :test_request_parameters, params: {action: 'foobar'}
+    post :test_request_parameters, params: { action: 'foobar' }
     parsed_params = eval(@response.body)
-    assert_equal({'action' => 'foobar'}, parsed_params)
+    assert_equal({ action: 'foobar' }, parsed_params)
   end
 
   def test_kwarg_params_passing_with_session_and_flash
@@ -538,8 +538,8 @@ XML
 
     parsed_params = eval(@response.body)
     assert_equal(
-      {'controller' => 'test_case_test/test', 'action' => 'test_params',
-       'page' => {'name' => "Page name", 'month' => '4', 'year' => '2004', 'day' => '6'}},
+      { controller: 'test_case_test/test', action: 'test_params',
+        page: { name: "Page name", month: '4', year: '2004', day: '6'}},
       parsed_params
     )
 
@@ -553,8 +553,8 @@ XML
     }
     parsed_params = eval(@response.body)
     assert_equal(
-      {'controller' => 'test_case_test/test', 'action' => 'test_params',
-       'page' => {'name' => "Page name", 'month' => '4', 'year' => '2004', 'day' => '6'}},
+      { controller: 'test_case_test/test', action: 'test_params',
+        page: { name: "Page name", month: '4', year: '2004', day: '6'}},
       parsed_params
     )
   end
@@ -563,8 +563,8 @@ XML
     get :test_params, params: { format: 'json', count: 999 }
     parsed_params = eval(@response.body)
     assert_equal(
-      {'controller' => 'test_case_test/test', 'action' => 'test_params',
-       'format' => 'json', 'count' => 999 },
+      { controller: 'test_case_test/test', action: 'test_params',
+        format: 'json', count: 999 },
       parsed_params
     )
   end
@@ -573,8 +573,8 @@ XML
     get :test_params, params: { format: 'json', id: 1 }
     parsed_params = eval(@response.body)
     assert_equal(
-      {'controller' => 'test_case_test/test', 'action' => 'test_params',
-       'format' => 'json', 'id' => '1' },
+      { controller: 'test_case_test/test', action: 'test_params',
+        format: 'json', id: '1' },
       parsed_params
     )
   end
@@ -583,8 +583,8 @@ XML
     assert_deprecated { get :test_params, format: 'json', id: 1 }
     parsed_params = eval(@response.body)
     assert_equal(
-      {'controller' => 'test_case_test/test', 'action' => 'test_params',
-       'format' => 'json', 'id' => '1' },
+      { controller: 'test_case_test/test', action: 'test_params',
+        format: 'json', id: '1' },
       parsed_params
     )
   end
@@ -597,8 +597,8 @@ XML
     end
     parsed_params = eval(@response.body)
     assert_equal(
-      {'controller' => 'test_case_test/test', 'action' => 'test_params',
-       'frozen' => 'icy', 'frozens' => ['icy'], 'deepfreeze' => { 'frozen' => 'icy' }},
+      { controller: 'test_case_test/test', action: 'test_params',
+        frozen: 'icy', frozens: ['icy'], deepfreeze: { frozen: 'icy' }},
       parsed_params
     )
   end
@@ -693,13 +693,13 @@ XML
   def test_deprecated_xhr_with_params
     assert_deprecated { xhr :get, :test_params, params: { id: 1 } }
 
-    assert_equal(%({"id"=>"1", "controller"=>"test_case_test/test", "action"=>"test_params"}), @response.body)
+    assert_equal(%({:id=>"1", :controller=>"test_case_test/test", :action=>"test_params"}), @response.body)
   end
 
   def test_xhr_with_params
     get :test_params, params: { id: 1 }, xhr: true
 
-    assert_equal(%({"id"=>"1", "controller"=>"test_case_test/test", "action"=>"test_params"}), @response.body)
+    assert_equal(%({:id=>"1", :controller=>"test_case_test/test", :action=>"test_params"}), @response.body)
   end
 
   def test_xhr_with_session

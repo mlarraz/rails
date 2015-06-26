@@ -114,9 +114,9 @@ module ActionController
     # to change these is to specify `always_permitted_parameters` in your
     # config. For instance:
     #
-    #    config.always_permitted_parameters = %w( controller action format )
+    #    config.always_permitted_parameters = %i( controller action format )
     cattr_accessor :always_permitted_parameters
-    self.always_permitted_parameters = %w( controller action )
+    self.always_permitted_parameters = %i( controller action )
 
     def self.const_missing(const_name)
       return super unless const_name == :NEVER_UNPERMITTED_PARAMS
@@ -159,7 +159,7 @@ module ActionController
     #   params.to_h # => {}
     #
     #   safe_params = params.permit(:name)
-    #   safe_params.to_h # => {"name"=>"Senjougahara Hitagi"}
+    #   safe_params.to_h # => {:name=>"Senjougahara Hitagi"}
     def to_h
       if permitted?
         to_hash

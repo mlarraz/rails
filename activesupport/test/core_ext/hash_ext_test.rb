@@ -263,14 +263,14 @@ class HashExtTest < ActiveSupport::TestCase
   end
 
   def test_symbolize_keys_for_hash_with_indifferent_access
-    assert_instance_of Hash, @symbols.with_indifferent_access.symbolize_keys
+    assert_instance_of ActiveSupport::HashWithIndifferentAccess, @symbols.with_indifferent_access.symbolize_keys
     assert_equal @symbols, @symbols.with_indifferent_access.symbolize_keys
     assert_equal @symbols, @strings.with_indifferent_access.symbolize_keys
     assert_equal @symbols, @mixed.with_indifferent_access.symbolize_keys
   end
 
   def test_deep_symbolize_keys_for_hash_with_indifferent_access
-    assert_instance_of Hash, @nested_symbols.with_indifferent_access.deep_symbolize_keys
+    assert_instance_of ActiveSupport::HashWithIndifferentAccess, @nested_symbols.with_indifferent_access.deep_symbolize_keys
     assert_equal @nested_symbols, @nested_symbols.with_indifferent_access.deep_symbolize_keys
     assert_equal @nested_symbols, @nested_strings.with_indifferent_access.deep_symbolize_keys
     assert_equal @nested_symbols, @nested_mixed.with_indifferent_access.deep_symbolize_keys
@@ -278,63 +278,62 @@ class HashExtTest < ActiveSupport::TestCase
 
 
   def test_symbolize_keys_bang_for_hash_with_indifferent_access
-    assert_raise(NoMethodError) { @symbols.with_indifferent_access.dup.symbolize_keys! }
-    assert_raise(NoMethodError) { @strings.with_indifferent_access.dup.symbolize_keys! }
-    assert_raise(NoMethodError) { @mixed.with_indifferent_access.dup.symbolize_keys! }
+    assert_equal @symbols, @symbols.with_indifferent_access.dup.symbolize_keys!
+    assert_equal @symbols, @strings.with_indifferent_access.dup.symbolize_keys!
+    assert_equal @symbols, @mixed.with_indifferent_access.dup.symbolize_keys!
   end
 
   def test_deep_symbolize_keys_bang_for_hash_with_indifferent_access
-    assert_raise(NoMethodError) { @nested_symbols.with_indifferent_access.deep_dup.deep_symbolize_keys! }
-    assert_raise(NoMethodError) { @nested_strings.with_indifferent_access.deep_dup.deep_symbolize_keys! }
-    assert_raise(NoMethodError) { @nested_mixed.with_indifferent_access.deep_dup.deep_symbolize_keys! }
+    assert_equal @nested_symbols, @nested_symbols.with_indifferent_access.deep_dup.deep_symbolize_keys!
+    assert_equal @nested_symbols, @nested_strings.with_indifferent_access.deep_dup.deep_symbolize_keys!
+    assert_equal @nested_symbols, @nested_mixed.with_indifferent_access.deep_dup.deep_symbolize_keys!
   end
 
   def test_symbolize_keys_preserves_keys_that_cant_be_symbolized_for_hash_with_indifferent_access
     assert_equal @illegal_symbols, @illegal_symbols.with_indifferent_access.symbolize_keys
-    assert_raise(NoMethodError) { @illegal_symbols.with_indifferent_access.dup.symbolize_keys! }
+    assert_equal @illegal_symbols, @illegal_symbols.with_indifferent_access.dup.symbolize_keys!
   end
 
   def test_deep_symbolize_keys_preserves_keys_that_cant_be_symbolized_for_hash_with_indifferent_access
     assert_equal @nested_illegal_symbols, @nested_illegal_symbols.with_indifferent_access.deep_symbolize_keys
-    assert_raise(NoMethodError) { @nested_illegal_symbols.with_indifferent_access.deep_dup.deep_symbolize_keys! }
+    assert_equal @nested_illegal_symbols, @nested_illegal_symbols.with_indifferent_access.deep_dup.deep_symbolize_keys!
   end
 
   def test_symbolize_keys_preserves_fixnum_keys_for_hash_with_indifferent_access
     assert_equal @fixnums, @fixnums.with_indifferent_access.symbolize_keys
-    assert_raise(NoMethodError) { @fixnums.with_indifferent_access.dup.symbolize_keys! }
+    assert_equal @fixnums, @fixnums.with_indifferent_access.dup.symbolize_keys!
   end
 
   def test_deep_symbolize_keys_preserves_fixnum_keys_for_hash_with_indifferent_access
     assert_equal @nested_fixnums, @nested_fixnums.with_indifferent_access.deep_symbolize_keys
-    assert_raise(NoMethodError) { @nested_fixnums.with_indifferent_access.deep_dup.deep_symbolize_keys! }
+    assert_equal @nested_fixnums, @nested_fixnums.with_indifferent_access.deep_dup.deep_symbolize_keys!
   end
 
   def test_stringify_keys_for_hash_with_indifferent_access
-    assert_instance_of ActiveSupport::HashWithIndifferentAccess, @symbols.with_indifferent_access.stringify_keys
+    assert_instance_of Hash, @symbols.with_indifferent_access.stringify_keys
     assert_equal @strings, @symbols.with_indifferent_access.stringify_keys
     assert_equal @strings, @strings.with_indifferent_access.stringify_keys
     assert_equal @strings, @mixed.with_indifferent_access.stringify_keys
   end
 
   def test_deep_stringify_keys_for_hash_with_indifferent_access
-    assert_instance_of ActiveSupport::HashWithIndifferentAccess, @nested_symbols.with_indifferent_access.deep_stringify_keys
+    assert_instance_of Hash, @nested_symbols.with_indifferent_access.deep_stringify_keys
     assert_equal @nested_strings, @nested_symbols.with_indifferent_access.deep_stringify_keys
     assert_equal @nested_strings, @nested_strings.with_indifferent_access.deep_stringify_keys
     assert_equal @nested_strings, @nested_mixed.with_indifferent_access.deep_stringify_keys
   end
 
   def test_stringify_keys_bang_for_hash_with_indifferent_access
-    assert_instance_of ActiveSupport::HashWithIndifferentAccess, @symbols.with_indifferent_access.dup.stringify_keys!
-    assert_equal @strings, @symbols.with_indifferent_access.dup.stringify_keys!
-    assert_equal @strings, @strings.with_indifferent_access.dup.stringify_keys!
-    assert_equal @strings, @mixed.with_indifferent_access.dup.stringify_keys!
+    assert_raise(NoMethodError) { @symbols.with_indifferent_access.dup.stringify_keys!}
+    assert_raise(NoMethodError) { @strings.with_indifferent_access.dup.stringify_keys! }
+    assert_raise(NoMethodError) { @mixed.with_indifferent_access.dup.stringify_keys! }
   end
 
   def test_deep_stringify_keys_bang_for_hash_with_indifferent_access
-    assert_instance_of ActiveSupport::HashWithIndifferentAccess, @nested_symbols.with_indifferent_access.dup.deep_stringify_keys!
-    assert_equal @nested_strings, @nested_symbols.with_indifferent_access.deep_dup.deep_stringify_keys!
-    assert_equal @nested_strings, @nested_strings.with_indifferent_access.deep_dup.deep_stringify_keys!
-    assert_equal @nested_strings, @nested_mixed.with_indifferent_access.deep_dup.deep_stringify_keys!
+    assert_raise(NoMethodError) { @nested_symbols.with_indifferent_access.dup.deep_stringify_keys! }
+    assert_raise(NoMethodError) { @nested_symbols.with_indifferent_access.deep_dup.deep_stringify_keys! }
+    assert_raise(NoMethodError) { @nested_strings.with_indifferent_access.deep_dup.deep_stringify_keys! }
+    assert_raise(NoMethodError) { @nested_mixed.with_indifferent_access.deep_dup.deep_stringify_keys! }
   end
 
   def test_nested_under_indifferent_access
@@ -353,7 +352,7 @@ class HashExtTest < ActiveSupport::TestCase
     @symbols = @symbols.with_indifferent_access
     @mixed   = @mixed.with_indifferent_access
 
-    assert_equal 'a', @strings.__send__(:convert_key, :a)
+    assert_equal :a, @strings.__send__(:convert_key, :a)
 
     assert_equal 1, @strings.fetch('a')
     assert_equal 1, @strings.fetch(:a.to_s)
@@ -543,7 +542,7 @@ class HashExtTest < ActiveSupport::TestCase
   def test_indifferent_select
     hash = ActiveSupport::HashWithIndifferentAccess.new(@strings).select {|k,v| v == 1}
 
-    assert_equal({ 'a' => 1 }, hash)
+    assert_equal({ a: 1 }, hash)
     assert_instance_of ActiveSupport::HashWithIndifferentAccess, hash
   end
 
@@ -557,14 +556,14 @@ class HashExtTest < ActiveSupport::TestCase
     indifferent_strings = ActiveSupport::HashWithIndifferentAccess.new(@strings)
     indifferent_strings.select! {|k,v| v == 1}
 
-    assert_equal({ 'a' => 1 }, indifferent_strings)
+    assert_equal({ a: 1 }, indifferent_strings)
     assert_instance_of ActiveSupport::HashWithIndifferentAccess, indifferent_strings
   end
 
   def test_indifferent_reject
     hash = ActiveSupport::HashWithIndifferentAccess.new(@strings).reject {|k,v| v != 1}
 
-    assert_equal({ 'a' => 1 }, hash)
+    assert_equal({ a: 1 }, hash)
     assert_instance_of ActiveSupport::HashWithIndifferentAccess, hash
   end
 
@@ -572,26 +571,26 @@ class HashExtTest < ActiveSupport::TestCase
     indifferent_strings = ActiveSupport::HashWithIndifferentAccess.new(@strings)
     indifferent_strings.reject! {|k,v| v != 1}
 
-    assert_equal({ 'a' => 1 }, indifferent_strings)
+    assert_equal({ a: 1 }, indifferent_strings)
     assert_instance_of ActiveSupport::HashWithIndifferentAccess, indifferent_strings
   end
 
   def test_indifferent_to_hash
-    # Should convert to a Hash with String keys.
-    assert_equal @strings, @mixed.with_indifferent_access.to_hash
+    # Should convert to a Hash with Symbol keys.
+    assert_equal @symbols, @mixed.with_indifferent_access.to_hash
 
     # Should preserve the default value.
     mixed_with_default = @mixed.dup
     mixed_with_default.default = '1234'
     roundtrip = mixed_with_default.with_indifferent_access.to_hash
-    assert_equal @strings, roundtrip
+    assert_equal @symbols, roundtrip
     assert_equal '1234', roundtrip.default
 
     # Ensure nested hashes are not HashWithIndiffereneAccess
     new_to_hash = @nested_mixed.with_indifferent_access.to_hash
     assert_not new_to_hash.instance_of?(HashWithIndifferentAccess)
-    assert_not new_to_hash["a"].instance_of?(HashWithIndifferentAccess)
-    assert_not new_to_hash["a"]["b"].instance_of?(HashWithIndifferentAccess)
+    assert_not new_to_hash[:a].instance_of?(HashWithIndifferentAccess)
+    assert_not new_to_hash[:a][:b].instance_of?(HashWithIndifferentAccess)
   end
 
   def test_lookup_returns_the_same_object_that_is_stored_in_hash_indifferent_access
@@ -614,8 +613,8 @@ class HashExtTest < ActiveSupport::TestCase
 
     hash = hash.to_hash
     assert_not hash.instance_of?(HashWithIndifferentAccess)
-    assert_not hash["urls"].instance_of?(HashWithIndifferentAccess)
-    assert_not hash["urls"]["url"].first.instance_of?(HashWithIndifferentAccess)
+    assert_not hash[:urls].instance_of?(HashWithIndifferentAccess)
+    assert_not hash[:urls][:url].first.instance_of?(HashWithIndifferentAccess)
   end
 
   def test_should_preserve_array_subclass_when_value_is_array
@@ -760,7 +759,7 @@ class HashExtTest < ActiveSupport::TestCase
     hash_1 = HashWithIndifferentAccess.new({ :a => "a", :b => "b", :c => { :c1 => "c1", :c2 => "c2", :c3 => { :d1 => "d1" } } })
     hash_2 = HashWithIndifferentAccess.new({ :a => 1, :c => { :c1 => 2, :c3 => { :d2 => "d2" } } })
     hash_3 = { :a => 1, :c => { :c1 => 2, :c3 => { :d2 => "d2" } } }
-    expected = { "a" => 1, "b" => "b", "c" => { "c1" => 2, "c2" => "c2", "c3" => { "d1" => "d1", "d2" => "d2" } } }
+    expected = { a: 1, b: "b", c: { c1: 2, c2: "c2", c3: { d1: "d1", d2: "d2" } } }
     assert_equal expected, hash_1.deep_merge(hash_2)
     assert_equal expected, hash_1.deep_merge(hash_3)
 
@@ -774,7 +773,7 @@ class HashExtTest < ActiveSupport::TestCase
     hash.store('test1', 11)
     hash[:test2] = 2
     hash['test2'] = 22
-    expected = { "test1" => 11, "test2" => 22 }
+    expected = { test1: 11, test2: 22 }
     assert_equal expected, hash
   end
 

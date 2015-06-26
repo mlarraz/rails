@@ -17,7 +17,7 @@ module ActiveRecord
       nested_parameter_attributes = {}
 
       attributes.each do |k, v|
-        if k.include?("(")
+        if k.to_s.include?("(")
           multi_parameter_attributes[k] = attributes.delete(k)
         elsif v.is_a?(Hash)
           nested_parameter_attributes[k] = attributes.delete(k)
