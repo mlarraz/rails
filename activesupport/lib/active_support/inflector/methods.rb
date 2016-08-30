@@ -258,11 +258,17 @@ module ActiveSupport
     def constantize(camel_cased_word)
       names = camel_cased_word.split("::".freeze)
 
-      # Trigger a built-in NameError exception including the ill-formed constant in the message.
-      Object.const_get(camel_cased_word) if names.empty?
+      # The standard case, where the top-level constant is defined exactly as specified:
+      #
+      #   'Foo::Bar' => Foo::Bar
+      #
+      # Also triggers a built-in NameError exception if given an ill-formed constant.
+      if names.size < 2 || Object.const_defined?(camel_cased_word)
+        return Object.const_get(camel_cased_word)
+      end
 
       # Remove the first blank element in case of '::ClassName' notation.
-      names.shift if names.size > 1 && names.first.empty?
+      names.shift if names.first.empty?
 
       names.inject(Object) do |constant, name|
         if constant == Object
